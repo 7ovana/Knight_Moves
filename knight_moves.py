@@ -8,23 +8,25 @@ def kn(start, N):
     
     if N==0:
         return 1
-    markov = np.array([[0, 0, 0, 0, 1, 0, 1, 0, 0, 0],
-                       [0, 0, 0, 0, 0, 0, 1, 0, 1, 0],
-                       [0, 0, 0, 0, 0, 0, 0, 1, 0, 1],
-                       [0, 0, 0, 0, 1, 0, 0, 0, 1, 0],
-                       [1, 0, 0, 1, 0, 0, 0, 0, 0, 1],
-                       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-                       [1, 1, 0, 0, 0, 0, 0, 1, 0, 0],
-                       [0, 0, 1, 0, 0, 0, 1, 0, 0, 0],
-                       [0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
-                       [0, 0, 1, 0, 1, 0, 0, 0, 0, 0]], dtype = object)
-    res = np.eye(10, dtype = object)
+    markov = np.array([[0, 0, 0, 0, 1, 1, 0, 0, 0],
+                       [0, 0, 0, 0, 0, 1, 0, 1, 0],
+                       [0, 0, 0, 0, 0, 0, 1, 0, 1],
+                       [0, 0, 0, 0, 1, 0, 0, 1, 0],
+                       [1, 0, 0, 1, 0, 0, 0, 0, 1],
+                       [1, 1, 0, 0, 0, 0, 1, 0, 0],
+                       [0, 0, 1, 0, 0, 1, 0, 0, 0],
+                       [0, 1, 0, 1, 0, 0, 0, 0, 0],
+                       [0, 0, 1, 0, 1, 0, 0, 0, 0]], dtype = object)
+    res = np.eye(9, dtype = object)
     while N > 1:
         if N & 1:
             res = res@markov
         markov = markov@markov
         N >>= 1
-    return np.sum(res@markov[start])
+    if start < 5:
+        return np.sum(res@markov[start])
+    else:
+        return np.sum(res@markov[start-1])
 
 if __name__ == '__main__':
-    print(kn(2,100000))
+    print(kn(6,10000))
